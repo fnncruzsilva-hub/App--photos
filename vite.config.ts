@@ -24,17 +24,17 @@ export default defineConfig(({mode}) => {
           display: 'standalone',
           icons: [
             {
-              src: 'https://img.icons8.com/ios-filled/192/000000/printer.png',
+              src: 'https://img.icons8.com/fluency/192/printer.png',
               sizes: '192x192',
               type: 'image/png'
             },
             {
-              src: 'https://img.icons8.com/ios-filled/512/000000/printer.png',
+              src: 'https://img.icons8.com/fluency/512/printer.png',
               sizes: '512x512',
               type: 'image/png'
             },
             {
-              src: 'https://img.icons8.com/ios-filled/512/000000/printer.png',
+              src: 'https://img.icons8.com/fluency/512/printer.png',
               sizes: '512x512',
               type: 'image/png',
               purpose: 'any maskable'
