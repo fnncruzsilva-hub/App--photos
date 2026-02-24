@@ -42,6 +42,25 @@ export default function App() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [isSavingImages, setIsSavingImages] = useState(false);
   const [previewPage, setPreviewPage] = useState(0);
+  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+
+  useEffect(() => {
+    const handler = (e: any) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+    };
+    window.addEventListener('beforeinstallprompt', handler);
+    return () => window.removeEventListener('beforeinstallprompt', handler);
+  }, []);
+
+  const handleInstallClick = async () => {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    if (outcome === 'accepted') {
+      setDeferredPrompt(null);
+    }
+  };
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -463,6 +482,14 @@ export default function App() {
           </div>
           
           <div className="flex items-center gap-3 md:gap-4">
+            {deferredPrompt && (
+              <button 
+                onClick={handleInstallClick}
+                className="hidden lg:flex items-center gap-2 px-4 py-2 bg-emerald-50 text-emerald-700 rounded-full text-[10px] font-black uppercase tracking-widest hover:bg-emerald-100 transition-all border border-emerald-200"
+              >
+                Instalar App
+              </button>
+            )}
             <button 
               onClick={saveToPNG}
               disabled={images.length === 0 || isSavingImages}
@@ -693,6 +720,15 @@ export default function App() {
                 </label>
                 
                 <div className="space-y-3">
+                  {deferredPrompt && (
+                    <button 
+                      onClick={handleInstallClick}
+                      className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-emerald-600 text-white rounded-xl text-xs font-bold hover:bg-emerald-700 transition-all active:scale-95 shadow-lg shadow-emerald-200 mb-4"
+                    >
+                      <Plus size={16} strokeWidth={2.5} />
+                      Instalar Aplicativo no Celular
+                    </button>
+                  )}
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-medium">Borda Branca</span>
                     <button 
